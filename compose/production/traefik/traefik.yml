@@ -15,8 +15,6 @@ entryPoints:
     # https
     address: ":443"
 
-  flower:
-    address: ":5555"
 
 certificatesResolvers:
   letsencrypt:
@@ -32,7 +30,7 @@ http:
   routers:
     web-secure-router:
       # rule: "Host(`thienhi-chat.webhookfacebook.com`) || Host(`www.thienhi-chat.webhookfacebook.com`)"
-      rule: "Host(`thienhi-chat.webhookfacebook.com`)"
+      rule: "Host(`ec2-175-41-160-73.ap-southeast-1.compute.amazonaws.com`) || Host(`www.thienhi-chat.webhookfacebook.com`)"
       entryPoints:
         - web-secure
       middlewares:
@@ -55,10 +53,10 @@ http:
         servers:
           - url: http://django:5000
 
-    flower:
-      loadBalancer:
-        servers:
-          - url: http://flower:5555
+    # flower:
+    #   loadBalancer:
+    #     servers:
+    #       - url: http://flower:5555
 
 providers:
   # https://docs.traefik.io/master/providers/file/
