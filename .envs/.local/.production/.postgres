@@ -1,7 +1,9 @@
 # PostgreSQL
 # ------------------------------------------------------------------------------
-POSTGRES_HOST=postgres
+POSTGRES_HOST=ep-soft-cherry-733290.ap-southeast-1.aws.neon.tech
 POSTGRES_PORT=5432
-POSTGRES_DB=hotel_manager
-POSTGRES_USER=debug
-POSTGRES_PASSWORD=debug
+POSTGRES_DB=neondb
+POSTGRES_USER=ThienHi
+POSTGRES_PASSWORD=xmWOuSMtF50o
+
+DATABASE_URL=postgres://ThienHi:xmWOuSMtF50o@ep-soft-cherry-733290.ap-southeast-1.aws.neon.tech/neondb
