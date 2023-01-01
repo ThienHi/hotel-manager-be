@@ -31,7 +31,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: "Host(`thienhi.chatfb.webhookfb.chat`) || Host(`www.thienhi.chatfb.webhookfb.chat`)"
+      rule: "Host(`thienhi-chat.webhookfacebook.com`) || Host(`www.thienhi-chat.webhookfacebook.com`)"
       entryPoints:
         - web-secure
       middlewares:
@@ -42,7 +42,7 @@ http:
         certResolver: letsencrypt
 
     flower-secure-router:
-      rule: "Host(`thienhi.chatfb.webhookfb.chat`)"
+      rule: "Host(`thienhi-chat.webhookfacebook.com`)"
       entryPoints:
         - flower
       service: flower
