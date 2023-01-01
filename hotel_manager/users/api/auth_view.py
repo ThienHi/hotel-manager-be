@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.views import TokenObtainPairView
-from hotel_manager.users.api.serializers import MyTokenObtainPairSerializer
+from hotel_manager.users.api.serializers import MyTokenObtainPairSerializer, RefreshTokenSerializer
 
 
 User = get_user_model()
