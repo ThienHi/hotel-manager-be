@@ -31,21 +31,13 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: "Host(`thienhi-chat.webhookfacebook.com`) || Host(`www.thienhi-chat.webhookfacebook.com`)"
+      # rule: "Host(`thienhi-chat.webhookfacebook.com`) || Host(`www.thienhi-chat.webhookfacebook.com`)"
+      rule: "Host(`thienhi-chat.webhookfacebook.com`)"
       entryPoints:
         - web-secure
       middlewares:
         - csrf
       service: django
-      tls:
-        # https://docs.traefik.io/master/routing/routers/#certresolver
-        certResolver: letsencrypt
-
-    flower-secure-router:
-      rule: "Host(`thienhi-chat.webhookfacebook.com`)"
-      entryPoints:
-        - flower
-      service: flower
       tls:
         # https://docs.traefik.io/master/routing/routers/#certresolver
         certResolver: letsencrypt
