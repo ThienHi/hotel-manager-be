@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import logging
-from nats import utils
 import constants
 from schemas.chat_message_schema import FacebookIncomingMessage
 from schemas.nats import NatsChatMessage, NatsChatMessageAttachment
