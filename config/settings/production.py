@@ -142,3 +142,24 @@ SPECTACULAR_SETTINGS["SERVERS"] = [  # noqa F405
 ]
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+# APP Facebook
+SUBSCRIBE_FIELDS = 'messages,messaging_postbacks,feed,inbox_labels,message_reads'
+
+FACEBOOK_APP_ID = '5482298951821522'     # 459417807935454
+FACEBOOK_APP_SECRET = '14999c82309aff7a760b509c96c16b00'    # 316f7035fded8674d79148a130518ed0
+FACEBOOK_GRAPH_API = 'https://graph.facebook.com/v14.0'
+URL_FACEBOOK_GRAPH_API_SEND_MESSAGE = 'https://graph.facebook.com/me/messages'
+
+
+# Setup NATs
+CHANNELS_SUBSCRIBE = ["hotel.manager.message.receive.*"]
+NATS_URL = env("NATS_URL", default="nats://172.24.222.112:4222")
+
+
+# Setup Redis
+REDIS_HOST = env("REDIS_HOST", default="172.19.0.2")
+REDIS_PORT = env("REDIS_PORT", default="6379")
+REDIS_PASSWORD = env("REDIS_PASSWORD", default="")
+REDIS_USER = env("REDIS_USER", default="")
+REDIS_DB = env("REDIS_DB", default=1)
