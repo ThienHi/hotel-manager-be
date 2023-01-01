@@ -336,6 +336,6 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
-
+ALLOWED_HOSTS = ["*"]
 # APP Facebook
 SUBSCRIBE_FIELDS = 'messages,messaging_postbacks,feed,inbox_labels,message_reads'

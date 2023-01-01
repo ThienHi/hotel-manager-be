@@ -11,8 +11,8 @@ SECRET_KEY = env(
     default="bsWzFpTdMt4Fxo4ng3L0zy9749FLLjFz8LIKRVphcGUwRd0eI8uo6FU6Bd8bCxq4",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["ec2-175-41-160-73.ap-southeast-1.compute.amazonaws.com"]
-# ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["ec2-175-41-160-73.ap-southeast-1.compute.amazonaws.com"]
+ALLOWED_HOSTS = ["*"]
 
 # CACHES
 # ------------------------------------------------------------------------------
