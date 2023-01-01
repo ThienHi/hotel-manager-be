@@ -9,3 +9,5 @@ CELERY_TASK_LOG_MESSAGE_REOPEN_ROOM = "create-log-message-reopen-room"
 CELERY_TASK_STORAGE_MESSAGE_LIVECHAT = "storage-message-livechat"
 CELERY_TASK_STORAGE_MESSAGE_FACEBOOK = "storage-message-facebook"
 CELERY_TASK_STORAGE_MESSAGE_ZALO = "storage-message-zalo"
+
+DEBUG_LOGGER_NAME = "storage-message-"

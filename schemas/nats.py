@@ -2,7 +2,7 @@
 from typing import List, Optional, Dict
 from pydantic import BaseModel
 import ujson
-import constants
+from core import constants
 
 
 class CustomBaseModel(BaseModel):
