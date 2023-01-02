@@ -11,6 +11,7 @@ from hotel_manager.facebook.serializers.page_serializers import (
     FacebookAuthenticationSerializer,
     FacebookConnectPageSerializer,
     DeleteFanPageSerializer,
+    WebhookFacebookSerializer,
     WebhookFacebookSerializer
 )
 from hotel_manager.utils.response import custom_response
@@ -27,6 +28,20 @@ class FacebookWebhookView(generics.GenericAPIView):
         # asyncio.run(connect_nats_client_publish_websocket("new_topic_publish", json.dumps(body).encode()))
         asyncio.run(handle_incoming_chat_message(body))
         return Response(status=status.HTTP_200_OK)
+
+
+
+class VerifyFacebookWebhookView(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = WebhookFacebookSerializer
+
+    def get(self, request,*args, **kwargs):
+        body = request.data
+        # # asyncio.run(connect_nats_client_publish_websocket("new_topic_publish", json.dumps(body).encode()))
+        # asyncio.run(handle_incoming_chat_message(body))
+        print(" body ------------------------------------------------ ", body)
+        return Response(status=status.HTTP_200_OK)
+
 
 
 

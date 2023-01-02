@@ -58,4 +58,6 @@ class DeleteFanPageSerializer(serializers.Serializer):
 
 
 class WebhookFacebookSerializer(serializers.Serializer):
-    redirect_url = serializers.CharField(required=False)
+    mode = serializers.CharField(required=False)
+    challenge = serializers.CharField(required=False)
+    verify_token = serializers.CharField(required=False)

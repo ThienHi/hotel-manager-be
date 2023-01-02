@@ -9,7 +9,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
 from hotel_manager.users.api.auth_view import MyTokenObtainPairView, LogoutView
 from hotel_manager.users.api.views import RegisterView, RegisterCustomerView
-from hotel_manager.facebook.api.facebook_auth_view import FacebookWebhookView
+from hotel_manager.facebook.api.facebook_auth_view import FacebookWebhookView, VerifyFacebookWebhookView
 
 
 urlpatterns = [
@@ -23,6 +23,7 @@ urlpatterns = [
     path("api/register-staff/", RegisterView.as_view(), name='register-staff'),
     path("api/sign-up/", RegisterCustomerView.as_view(), name='sign-up'),
     path("chat/receiver/", FacebookWebhookView.as_view(), name='webhook-fb'),
+    path("chat/receiver/", VerifyFacebookWebhookView.as_view(), name='webhook-fb'),
     path("users/", include("hotel_manager.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     path('tinymce/', include('tinymce.urls')),
