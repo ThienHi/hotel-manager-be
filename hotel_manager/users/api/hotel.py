@@ -10,7 +10,7 @@ from hotel_manager.users.api.pagination_class import CustomPagination
 class HotelViewSet(viewsets.ModelViewSet):
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     pagination_class = CustomPagination
 
     def create(self, request, *args, **kwargs):
