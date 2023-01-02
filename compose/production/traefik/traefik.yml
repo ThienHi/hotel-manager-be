@@ -30,8 +30,8 @@ http:
   routers:
     web-secure-router:
       # rule: "Host(`thienhi-chat.webhookfacebook.com`) || Host(`www.thienhi-chat.webhookfacebook.com`)"
-      rule: "Host(`ec2-175-41-160-73.ap-southeast-1.compute.amazonaws.com`) || Host(`www.ec2-175-41-160-73.ap-southeast-1.compute.amazonaws.com`)"
-      # rule: "Host(`thienhi26.hotel`) || Host(`www.thienhi26.hotel`)"
+      # rule: "Host(`ec2-175-41-160-73.ap-southeast-1.compute.amazonaws.com`) || Host(`www.ec2-175-41-160-73.ap-southeast-1.compute.amazonaws.com`)"
+      rule: "Host(`ns-164.awsdns-20.com.`) || Host(`www.thienhi26.hotel`)"
       entryPoints:
         - web-secure
       middlewares:
