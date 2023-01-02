@@ -61,3 +61,8 @@ class WebhookFacebookSerializer(serializers.Serializer):
     mode = serializers.CharField(required=False)
     challenge = serializers.CharField(required=False)
     verify_token = serializers.CharField(required=False)
+
+class FacebookSerializer(serializers.Serializer):
+    mode = serializers.CharField(required=False)
+    challenge = serializers.CharField(required=False)
+    verify_token = serializers.CharField(required=False)

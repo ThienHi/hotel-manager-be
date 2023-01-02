@@ -11,17 +11,17 @@ from hotel_manager.facebook.serializers.page_serializers import (
     FacebookAuthenticationSerializer,
     FacebookConnectPageSerializer,
     DeleteFanPageSerializer,
-    WebhookFacebookSerializer,
     WebhookFacebookSerializer
 )
 from hotel_manager.utils.response import custom_response
 from .chat_message import handle_incoming_chat_message
 import asyncio
+from rest_framework.views import APIView
 
 
-class FacebookWebhookView(generics.GenericAPIView):
+class FacebookWebhookView(APIView):
     permission_classes = (permissions.AllowAny,)
-    serializer_class = WebhookFacebookSerializer
+    # serializer_class = WebhookFacebookSerializer
 
     def post(self, request,*args, **kwargs):
         body = request.data
@@ -29,17 +29,23 @@ class FacebookWebhookView(generics.GenericAPIView):
         asyncio.run(handle_incoming_chat_message(body))
         return Response(status=status.HTTP_200_OK)
 
+    def get(self, request, format=None):
+        hub_mode = request.GET.get('hub.mode')
+        hub_challenge = request.GET.get('hub.challenge')
+        hub_verify_token = request.GET.get('hub.verify_token')
+        print(f'hub_mode {hub_mode} - hub_challenge {hub_challenge} - hub_verify_token {hub_verify_token}')
+        return Response(status=status.HTTP_200_OK)
 
 
 class VerifyFacebookWebhookView(generics.ListAPIView):
     permission_classes = (permissions.AllowAny,)
-    serializer_class = WebhookFacebookSerializer
+    # serializer_class = WebhookFacebookSerializer
 
     def get(self, request,*args, **kwargs):
-        body = request.data
-        # # asyncio.run(connect_nats_client_publish_websocket("new_topic_publish", json.dumps(body).encode()))
-        # asyncio.run(handle_incoming_chat_message(body))
-        print(" body ------------------------------------------------ ", body)
+        hub_mode = request.GET.get('hub.mode')
+        hub_challenge = request.GET.get('hub.challenge')
+        hub_verify_token = request.GET.get('hub.verify_token')
+        print(f'hub_mode {hub_mode} - hub_challenge {hub_challenge} - hub_verify_token {hub_verify_token}')
         return Response(status=status.HTTP_200_OK)
 
 
