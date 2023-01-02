@@ -31,7 +31,7 @@ http:
     web-secure-router:
       # rule: "Host(`thienhi-chat.webhookfacebook.com`) || Host(`www.thienhi-chat.webhookfacebook.com`)"
       # rule: "Host(`ec2-175-41-160-73.ap-southeast-1.compute.amazonaws.com`) || Host(`www.ec2-175-41-160-73.ap-southeast-1.compute.amazonaws.com`)"
-      rule: "Host(`thiennk5.000webhostapp.com`)"
+      rule: "Host(`thiennk5.infinityfreeapp.com`) || Host(`www.thiennk5.infinityfreeapp.com`)"
       entryPoints:
         - web-secure
       middlewares:
