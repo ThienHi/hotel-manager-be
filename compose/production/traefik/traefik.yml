@@ -30,7 +30,7 @@ http:
   routers:
     web-secure-router:
       # rule: "Host(`thienhi-chat.webhookfacebook.com`) || Host(`www.thienhi-chat.webhookfacebook.com`)"
-      rule: "Host(`api.thienhi-hotel2603.com`)"
+      rule: "Host(`demo-webhook.vracex.com`)"
       # rule: "Host(`thiennk5-infinityfreeapp.com`)"
       entryPoints:
         - web-secure
