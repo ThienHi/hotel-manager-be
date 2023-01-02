@@ -337,5 +337,24 @@ SPECTACULAR_SETTINGS = {
 # Your stuff...
 # ------------------------------------------------------------------------------
 ALLOWED_HOSTS = ["*"]
+
+# CORS
+CORS_ALLOWED_ORIGINS = [
+    'https://ec2-175-41-160-73.ap-southeast-1.compute.amazonaws.com',
+    'http://ec2-175-41-160-73.ap-southeast-1.compute.amazonaws.com',
+    'https://localhost:8000',
+    'http://localhost:8000',
+    'https://127.0.0.1:8000',
+    'http://127.0.0.1:8000'
+]
+CORS_ALLOW_METHODS = [
+'DELETE',
+'GET',
+'OPTIONS',
+'PATCH',
+'POST',
+'PUT',
+]
+
 # APP Facebook
 SUBSCRIBE_FIELDS = 'messages,messaging_postbacks,feed,inbox_labels,message_reads'
