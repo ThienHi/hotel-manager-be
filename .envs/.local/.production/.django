@@ -4,7 +4,7 @@
 DJANGO_SETTINGS_MODULE=config.settings.production
 DJANGO_SECRET_KEY=aP6iYy9zbhRBVDJDc4dSyDdO2bzyoy0fK7ZO87IJY6gC9F2IQ5tgMvwq1sE7gpVq
 DJANGO_ADMIN_URL=yJvxnqUTxgEYSAyCE5zLjIj8r2u65kyI/
-DJANGO_ALLOWED_HOSTS=ec2-175-41-160-73.ap-southeast-1.compute.amazonaws.com
+DJANGO_ALLOWED_HOSTS=*
 
 # Security
 # ------------------------------------------------------------------------------
