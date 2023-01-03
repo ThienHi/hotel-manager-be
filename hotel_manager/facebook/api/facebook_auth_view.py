@@ -25,16 +25,17 @@ class FacebookWebhookView(APIView):
 
     def post(self, request,*args, **kwargs):
         body = request.data
+        print("post request --------------------------------------- ", body)
         # asyncio.run(connect_nats_client_publish_websocket("new_topic_publish", json.dumps(body).encode()))
         asyncio.run(handle_incoming_chat_message(body))
         return Response(status=status.HTTP_200_OK)
 
-    def get(self, request, format=None):
+    def get(self, request, format=None, *args, **kwargs):
         hub_mode = request.GET.get('hub.mode')
         hub_challenge = request.GET.get('hub.challenge')
         hub_verify_token = request.GET.get('hub.verify_token')
         print(f'hub_mode {hub_mode} - hub_challenge {hub_challenge} - hub_verify_token {hub_verify_token}')
-        return Response(status=status.HTTP_200_OK)
+        return Response(hub_challenge, status=status.HTTP_200_OK)
 
 
 class VerifyFacebookWebhookView(generics.ListAPIView):
