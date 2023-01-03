@@ -32,7 +32,7 @@ class FacebookWebhookView(APIView):
 
     def get(self, request, format=None, *args, **kwargs):
         hub_mode = request.GET.get('hub.mode')
-        hub_challenge = request.GET.get('hub.challenge')
+        hub_challenge = request.query_params.get('hub.challenge')
         challenge = hub_challenge
 
         hub_verify_token = request.GET.get('hub.verify_token')
