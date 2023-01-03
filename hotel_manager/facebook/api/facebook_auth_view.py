@@ -34,8 +34,9 @@ class FacebookWebhookView(APIView):
         hub_mode = request.GET.get('hub.mode')
         hub_challenge = request.GET.get('hub.challenge')
         challenge = hub_challenge
+
         hub_verify_token = request.GET.get('hub.verify_token')
-        print(f'hub_mode {hub_mode} - hub_challenge {hub_challenge} - hub_verify_token {hub_verify_token}')
+        print(f'hub_mode {hub_mode} - hub_challenge {hub_challenge} ---- {challenge} - hub_verify_token {hub_verify_token}')
         return Response(data=challenge, status=status.HTTP_200_OK)
 
 
