@@ -1,5 +1,5 @@
 from django.contrib import admin
-from hotel_manager.facebook.models import FanPage, UserApp
+from hotel_manager.users.models import FanPage, UserApp
 
 @admin.register(FanPage)
 class FanPageAdmin(admin.ModelAdmin):

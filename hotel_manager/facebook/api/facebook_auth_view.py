@@ -5,7 +5,7 @@ from rest_framework import viewsets, permissions, generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.conf import settings
-from hotel_manager.facebook.models import FanPage
+from hotel_manager.users.models import FanPage
 from hotel_manager.facebook.serializers.page_serializers import (
     FanPageSerializer,
     FacebookAuthenticationSerializer,

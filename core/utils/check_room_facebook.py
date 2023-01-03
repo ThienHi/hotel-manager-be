@@ -1,5 +1,5 @@
-from hotel_manager.users.models import  Room
-from hotel_manager.facebook.models import FanPage, UserApp
+from hotel_manager.users.models import  Room, FanPage, UserApp
+# from hotel_manager.facebook.models import FanPage, UserApp
 from .api_facebook_app import get_user_info
 from django.utils import timezone
 from core.schema import  NatsChatMessage

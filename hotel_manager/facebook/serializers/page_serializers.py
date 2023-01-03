@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from hotel_manager.facebook.models import FanPage
+from hotel_manager.users.models import FanPage
 
 
 class FanPageSerializer(serializers.ModelSerializer):
