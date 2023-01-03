@@ -60,17 +60,17 @@ class HotelView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     pagination_class = CustomPagination
 
-    def list(self, request, *args, **kwargs):
-        hotel = Hotel.objects.all()
-        paginator = self.pagination_class()
-        page = paginator.paginate_queryset(hotel, request)
-        serializer = HotelSerializer(page, many=True)
-        return paginator.get_paginated_response(serializer.data)
+    # def list(self, request, *args, **kwargs):
+    #     hotel = Hotel.objects.all()
+    #     paginator = self.pagination_class()
+    #     page = paginator.paginate_queryset(hotel, request)
+    #     serializer = HotelSerializer(page, many=True)
+    #     return paginator.get_paginated_response(serializer.data)
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
+    # def retrieve(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance)
+    #     return Response(serializer.data)
 
 
 class HotelRoomViewSet(viewsets.ModelViewSet):
