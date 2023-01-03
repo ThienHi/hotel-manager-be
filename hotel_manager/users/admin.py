@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import admin as auth_admin
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
-from hotel_manager.users.models import Hotel, HotelRoom, Bill, BillDetail, Product, Message
+from hotel_manager.users.models import Hotel, HotelRoom, Bill, BillDetail, Product, Message, Room
 from hotel_manager.users.forms import UserAdminChangeForm, UserAdminCreationForm
 
 User = get_user_model()
@@ -61,3 +61,8 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Message._meta.fields if field.name != 'description']
+
+
+@admin.register(Room)
+class RoomAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in Room._meta.fields if field.name != 'description']
