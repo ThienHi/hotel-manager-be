@@ -34,12 +34,12 @@ class HotelSerializer(serializers.ModelSerializer):
 
 
 class HotelRoomSerializer(serializers.ModelSerializer):
-    hotel_id = serializers.IntegerField(required=True)
-    room_code = serializers.CharField(required=True)
-    name = serializers.CharField(required=False)
-    offer = serializers.IntegerField(required=False)    
-    description = serializers.CharField(required=False)
-    price = serializers.FloatField(required=True)
+    # hotel_id = serializers.IntegerField(required=True)
+    # room_code = serializers.CharField(required=True)
+    # name = serializers.CharField(required=False)
+    # offer = serializers.IntegerField(required=False)    
+    # description = serializers.CharField(required=False)
+    # price = serializers.FloatField(required=True)
 
     def validate(self, attrs):
         _room = HotelRoom.objects.filter(room_code=attrs['room_code'])
