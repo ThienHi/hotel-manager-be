@@ -17,6 +17,7 @@ from hotel_manager.utils.response import custom_response
 from .chat_message import handle_incoming_chat_message
 import asyncio
 from rest_framework.views import APIView
+import json
 
 
 class FacebookWebhookView(APIView):
@@ -27,7 +28,7 @@ class FacebookWebhookView(APIView):
         body = request.data
         print(type(body), "post request --------------------------------------- ", body)
         # asyncio.run(connect_nats_client_publish_websocket("new_topic_publish", json.dumps(body).encode()))
-        asyncio.run(handle_incoming_chat_message(body))
+        asyncio.run(handle_incoming_chat_message(json.dumps(body).encode('utf-8')))
         return Response(status=status.HTTP_200_OK)
 
     def get(self, request, format=None, *args, **kwargs):
