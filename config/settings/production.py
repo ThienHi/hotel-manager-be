@@ -156,7 +156,8 @@ URL_FACEBOOK_GRAPH_API_SEND_MESSAGE = 'https://graph.facebook.com/me/messages'
 
 # Setup NATs
 CHANNELS_SUBSCRIBE = ["hotel.manager.message.receive.*"]
-NATS_URL = env("NATS_URL", default="nats://172.24.222.112:4222")
+# NATS_URL = env("NATS_URL", default="nats://172.24.222.112:4222")
+NATS_URL = env("NATS_URL", default="nats://0.0.0.0:4222:4222")
 
 
 # Setup Redis
