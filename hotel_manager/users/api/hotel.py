@@ -4,14 +4,13 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from hotel_manager import constants
 from hotel_manager.users.models import Hotel, HotelImage, HotelRoom, RoomImage
 from hotel_manager.users.api.hotel_serializers import HotelSerializer,HotelRoomSerializer
-from hotel_manager.users.api.pagination_class import CustomPagination
+# from hotel_manager.users.api.pagination_class import CustomPagination
 
 
 class HotelImageViewSet(viewsets.ModelViewSet):
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
     permission_classes = [AllowAny]
-    # pagination_class = CustomPagination
 
     def create(self, request, *args, **kwargs):
         user = request.user
@@ -58,7 +57,6 @@ class HotelView(viewsets.ModelViewSet):
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
     permission_classes = [AllowAny]
-    # pagination_class = CustomPagination
 
     # def list(self, request, *args, **kwargs):
     #     hotel = Hotel.objects.all()
@@ -77,7 +75,6 @@ class HotelRoomViewSet(viewsets.ModelViewSet):
     queryset = HotelRoom.objects.all()
     serializer_class = HotelRoomSerializer
     permission_classes = [IsAuthenticated]
-    # pagination_class = CustomPagination
 
     # def list(self, request, *args, **kwargs):
     #     hotel = HotelRoom.objects.all()
