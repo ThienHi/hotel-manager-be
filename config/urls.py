@@ -10,7 +10,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from hotel_manager.users.api.auth_view import MyTokenObtainPairView, LogoutView
 from hotel_manager.users.api.views import RegisterView, RegisterCustomerView
 from hotel_manager.facebook.api.facebook_auth_view import FacebookWebhookView, VerifyFacebookWebhookView
-
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
@@ -27,7 +27,8 @@ urlpatterns = [
     path("users/", include("hotel_manager.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     path('tinymce/', include('tinymce.urls')),
-    path("api/login/", MyTokenObtainPairView.as_view(), name='login'),
+    path("api/login/", TokenObtainPairView.as_view(), name='login'),
+    # path("api/login/", MyTokenObtainPairView.as_view(), name='login'),
     path("api/logout/", LogoutView.as_view(), name='logout'),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
