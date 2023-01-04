@@ -56,6 +56,6 @@ async def handle_incoming_chat_message(request_body: bytes):
     except Exception as e:
         debug_logger.exception(f'facebook parse FacebookIncomingMessage get exception {e}')
         return
-
+    print(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ", incoming_message)
     res = await facebook_publish_to_nats_each_page_id(incoming_message)
     debug_logger.info(f'facebook publish nats results {res=}')
