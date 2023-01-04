@@ -11,7 +11,7 @@ class HotelImageViewSet(viewsets.ModelViewSet):
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
     permission_classes = [AllowAny]
-    pagination_class = CustomPagination
+    # pagination_class = CustomPagination
 
     def create(self, request, *args, **kwargs):
         user = request.user
@@ -58,7 +58,7 @@ class HotelView(viewsets.ModelViewSet):
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
     permission_classes = [AllowAny]
-    pagination_class = CustomPagination
+    # pagination_class = CustomPagination
 
     # def list(self, request, *args, **kwargs):
     #     hotel = Hotel.objects.all()
@@ -77,7 +77,7 @@ class HotelRoomViewSet(viewsets.ModelViewSet):
     queryset = HotelRoom.objects.all()
     serializer_class = HotelRoomSerializer
     permission_classes = [IsAuthenticated]
-    pagination_class = CustomPagination
+    # pagination_class = CustomPagination
 
     # def list(self, request, *args, **kwargs):
     #     hotel = HotelRoom.objects.all()

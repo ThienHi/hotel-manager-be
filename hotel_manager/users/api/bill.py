@@ -11,7 +11,7 @@ class BillViewSet(viewsets.ModelViewSet):
     queryset = Bill.objects.all()
     serializer_class = BillSerializer
     permission_classes = [IsAuthenticated]
-    pagination_class = CustomPagination
+    # pagination_class = CustomPagination
 
     def update(self, request, pk, *args, **kwargs):
         user = request.user
@@ -34,7 +34,7 @@ class BillDetailViewSet(viewsets.ModelViewSet):
     queryset = BillDetail.objects.all()
     serializer_class = BillDetailSerializer
     permission_classes = [IsAuthenticated]
-    pagination_class = CustomPagination
+    # pagination_class = CustomPagination
 
     def update(self, request, pk, *args, **kwargs):
         user = request.user
