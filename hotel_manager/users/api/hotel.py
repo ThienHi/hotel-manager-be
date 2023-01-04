@@ -88,43 +88,43 @@ class HotelRoomViewSet(viewsets.ModelViewSet):
     #     serializer = self.get_serializer(instance)
     #     return Response(serializer.data)
     
-    def create(self, request, *args, **kwargs):
-        user = request.user
-        if user.user_type != constants.ADMIN:
-            return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
-        sz = HotelRoomSerializer(data=request.data)
-        if sz.is_valid(raise_exception = True):
-            sz.save()
-            _room = HotelRoom.objects.get(id=sz.data.get('id'))
-            images = request.FILES.getlist('file')
-            for image in images:
-                activity_image = RoomImage(hotel_room=_room, image=image)
-                activity_image.save()
-        return Response(sz.data, status=status.HTTP_201_CREATED)
+    # def create(self, request, *args, **kwargs):
+    #     user = request.user
+    #     if user.user_type != constants.ADMIN:
+    #         return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
+    #     sz = HotelRoomSerializer(data=request.data)
+    #     if sz.is_valid(raise_exception = True):
+    #         sz.save()
+    #         _room = HotelRoom.objects.get(id=sz.data.get('id'))
+    #         images = request.FILES.getlist('file')
+    #         for image in images:
+    #             activity_image = RoomImage(hotel_room=_room, image=image)
+    #             activity_image.save()
+    #     return Response(sz.data, status=status.HTTP_201_CREATED)
 
-    def update(self, request, pk, *args, **kwargs):
-        user = request.user
-        sz = HotelRoomSerializer(data=request.data)
-        if user.user_type != constants.ADMIN:
-            return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
-        if sz.is_valid(raise_exception = True):
-            _room = HotelRoom.objects.filter(id=pk).first()
-            if not _room:
-                return Response("ROOM_NOT_EXIST", status=status.HTTP_400_BAD_REQUEST)
-            _room.room_code = sz.data.get('room_code')
-            _room.name = sz.data.get('name')
-            _room.description = sz.data.get('description')
-            _room.name = sz.data.get('offer')
-            _room.price = sz.data.get('price')
-            _room.save()
-            return Response("UPDATE_ROOM_SUCCESS", status=status.HTTP_200_OK)
+    # def update(self, request, pk, *args, **kwargs):
+    #     user = request.user
+    #     sz = HotelRoomSerializer(data=request.data)
+    #     if user.user_type != constants.ADMIN:
+    #         return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
+    #     if sz.is_valid(raise_exception = True):
+    #         _room = HotelRoom.objects.filter(id=pk).first()
+    #         if not _room:
+    #             return Response("ROOM_NOT_EXIST", status=status.HTTP_400_BAD_REQUEST)
+    #         _room.room_code = sz.data.get('room_code')
+    #         _room.name = sz.data.get('name')
+    #         _room.description = sz.data.get('description')
+    #         _room.name = sz.data.get('offer')
+    #         _room.price = sz.data.get('price')
+    #         _room.save()
+    #         return Response("UPDATE_ROOM_SUCCESS", status=status.HTTP_200_OK)
 
-    def destroy(self, request, pk, *args, **kwargs):
-        user = request.user
-        if user.user_type != constants.ADMIN:
-            return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
-        _room = HotelRoom.objects.filter(id=pk).first()
-        if not _room:
-            return Response("ROOM_NOT_EXIST", status=status.HTTP_400_BAD_REQUEST)
-        _room.delete()
-        return Response("DELETE_ROOM_SUCCESS", status=status.HTTP_204_NO_CONTENT)
+    # def destroy(self, request, pk, *args, **kwargs):
+    #     user = request.user
+    #     if user.user_type != constants.ADMIN:
+    #         return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
+    #     _room = HotelRoom.objects.filter(id=pk).first()
+    #     if not _room:
+    #         return Response("ROOM_NOT_EXIST", status=status.HTTP_400_BAD_REQUEST)
+    #     _room.delete()
+    #     return Response("DELETE_ROOM_SUCCESS", status=status.HTTP_204_NO_CONTENT)

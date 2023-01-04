@@ -89,6 +89,7 @@ class Hotel(models.Model):
     offer = models.IntegerField(null=True)
     country = models.CharField(max_length=255, null=True, blank=True)
     rate_hotel = models.IntegerField(null=True, blank=True, choices=Rate.choices, default=Rate.THREE)
+    image = models.ImageField(blank=True, null=True)
 
     class Meta:
         db_table = 'hotel'
@@ -118,6 +119,7 @@ class HotelRoom(models.Model):
     offer = models.IntegerField(null=True)
     rate_hotel_room = models.IntegerField(blank=True, choices=Rate.choices, default=Rate.THREE)
     price = models.FloatField(null=False, blank=False)
+    image = models.ImageField(blank=True, null=True)
 
     class Meta:
         db_table = 'hotel_room'
