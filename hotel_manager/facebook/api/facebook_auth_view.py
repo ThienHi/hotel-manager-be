@@ -28,7 +28,7 @@ class FacebookWebhookView(APIView):
         body = request.data
         print(type(body), "post request --------------------------------------- ", body)
         # asyncio.run(connect_nats_client_publish_websocket("new_topic_publish", json.dumps(body).encode()))
-        asyncio.run(handle_incoming_chat_message(json.dumps(body).encode('utf-8')))
+        # asyncio.run(handle_incoming_chat_message(json.dumps(body).encode('utf-8')))
         return Response(status=status.HTTP_200_OK)
 
     def get(self, request, format=None, *args, **kwargs):
