@@ -13,7 +13,7 @@ class BillViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def update(self, request, pk, *args, **kwargs):
-        user = request.user
+        user = request.user.id
         sz = BillSerializer(data=request.data)
         if user.user_type == constants.CUSTOMER:
             return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
@@ -35,7 +35,7 @@ class BillDetailViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def update(self, request, pk, *args, **kwargs):
-        user = request.user
+        user = request.user.id
         sz = BillDetailUpdateSerializer(data=request.data)
         sz.is_valid(raise_exception = True)
         if user.user_type == constants.CUSTOMER:

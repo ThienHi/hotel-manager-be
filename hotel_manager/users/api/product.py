@@ -13,7 +13,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        user = request.user
+        user = request.user.id
         if user.user_type != constants.ADMIN or user.user_type != constants.MANAGER:
             return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
         sz = ProductSerializer(data=request.data)
@@ -22,7 +22,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         return Response(sz.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, pk, *args, **kwargs):
-        user = request.user
+        user = request.user.id
         sz = ProductSerializer(data=request.data)
         if user.user_type != constants.ADMIN or user.user_type != constants.MANAGER:
             return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
@@ -39,7 +39,7 @@ class ProductViewSet(viewsets.ModelViewSet):
             return Response("UPDATE_HOTEL_SUCCESS", status=status.HTTP_200_OK)
 
     def destroy(self, request, pk, *args, **kwargs):
-        user = request.user
+        user = request.user.id
         if user.user_type != constants.ADMIN or user.user_type != constants.MANAGER:
             return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
         product = Product.objects.filter(id=pk).first()

@@ -13,7 +13,7 @@ class HotelImageViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
-        user = request.user
+        user = request.user.id
         if user.user_type != constants.ADMIN:
             return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
         sz = HotelSerializer(data=request.data)
@@ -27,7 +27,7 @@ class HotelImageViewSet(viewsets.ModelViewSet):
         return Response(sz.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, pk, *args, **kwargs):
-        user = request.user
+        user = request.user.id
         sz = HotelSerializer(data=request.data)
         if user.user_type != constants.ADMIN:
             return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
@@ -43,7 +43,7 @@ class HotelImageViewSet(viewsets.ModelViewSet):
             return Response("UPDATE_HOTEL_SUCCESS", status=status.HTTP_200_OK)
 
     def destroy(self, request, pk, *args, **kwargs):
-        user = request.user
+        user = request.user.id
         if user.user_type != constants.ADMIN:
             return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
         hotel = Hotel.objects.filter(id=pk).first()
@@ -89,7 +89,7 @@ class HotelRoomViewSet(viewsets.ModelViewSet):
     #     return Response(serializer.data)
     
     # def create(self, request, *args, **kwargs):
-    #     user = request.user
+    #     user = request.user.id
     #     if user.user_type != constants.ADMIN:
     #         return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
     #     sz = HotelRoomSerializer(data=request.data)
@@ -103,7 +103,7 @@ class HotelRoomViewSet(viewsets.ModelViewSet):
     #     return Response(sz.data, status=status.HTTP_201_CREATED)
 
     # def update(self, request, pk, *args, **kwargs):
-    #     user = request.user
+    #     user = request.user.id
     #     sz = HotelRoomSerializer(data=request.data)
     #     if user.user_type != constants.ADMIN:
     #         return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
@@ -120,7 +120,7 @@ class HotelRoomViewSet(viewsets.ModelViewSet):
     #         return Response("UPDATE_ROOM_SUCCESS", status=status.HTTP_200_OK)
 
     # def destroy(self, request, pk, *args, **kwargs):
-    #     user = request.user
+    #     user = request.user.id
     #     if user.user_type != constants.ADMIN:
     #         return Response("NOT_PERMISSION", status=status.HTTP_401_UNAUTHORIZED)
     #     _room = HotelRoom.objects.filter(id=pk).first()

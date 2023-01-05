@@ -5,17 +5,28 @@ from rest_framework import viewsets, permissions, generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.conf import settings
-from hotel_manager.users.models import FanPage, Message
+from hotel_manager.users.models import FanPage, Message, Room
 from hotel_manager.facebook.serializers.page_serializers import (
     FanPageSerializer,
     FacebookAuthenticationSerializer,
     FacebookConnectPageSerializer,
     DeleteFanPageSerializer,
 )
+from hotel_manager.facebook.serializers.message_facebook_serializers import MessageFacebookSerializer
 from hotel_manager.utils.response import custom_response
 from .chat_message import handle_incoming_chat_message
 from rest_framework.views import APIView
-import asyncio, json
+import asyncio, json, uuid
+from core.utils import (
+    api_send_message_file_facebook,
+    get_message_from_mid,
+    facebook_format_data_from_mid_facebook,
+    api_send_message_text_facebook
+)
+from core.context import AppContextManager
+from core.schema import FormatSendMessage
+from core import constants
+from pydantic import parse_raw_as
 
 
 class FacebookWebhookView(APIView):
@@ -51,14 +62,14 @@ class FacebookViewSet(viewsets.ModelViewSet):
     serializer_class = FacebookAuthenticationSerializer
 
     def list(self, request, *args, **kwargs):
-        user_header = request.user
+        user_header = request.user.id
         pages = FanPage.objects.filter(user_id=user_header, type=constants.FACEBOOK,is_deleted= False)
         sz = FanPageSerializer(pages, many=True)
         return custom_response(200, "Get list page successfully", sz.data)
 
     @action(detail=False, methods=["POST"], url_path="list-page")
     def get_page(self, request, *args):
-        user_header = request.user
+        user_header = request.user.id
         sz = self.get_serializer(data=request.data)
         sz.is_valid(raise_exception=True)
         graph_api = settings.FACEBOOK_GRAPH_API
@@ -121,7 +132,7 @@ class FacebookViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["POST"], url_path="page/subscribe")
     def subscribe_page(self, request, *args):
-        user_header = request.user
+        user_header = request.user.id
         sz = FacebookConnectPageSerializer(data=request.data)
         if sz.is_valid(raise_exception=True):
             graph_api = settings.FACEBOOK_GRAPH_API
@@ -192,7 +203,7 @@ class FacebookViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['POST'], url_path='delete')
     def delete(self, request, *args, **kwargs):
-        user_header = request.user
+        user_header = request.user.id
         sz = DeleteFanPageSerializer(data = request.data)
         sz.is_valid(raise_exception=True)
         graph_api = settings.FACEBOOK_GRAPH_API
@@ -229,3 +240,44 @@ class FacebookViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         pass
+
+app_context = AppContextManager()
+
+async def send_message_fb(msg):
+    _message = parse_raw_as(FormatSendMessage, msg)
+    await app_context.run_send_message(_message)
+
+class MessageFacebookViewSet(viewsets.ModelViewSet):
+    queryset = Room.objects.all()
+    permission_classes = (permissions.IsAuthenticated, )
+    serializer_class = MessageFacebookSerializer
+
+    @action(detail=False, methods=["POST"], url_path="send")
+    def send_message(self, request, *args, **kwargs):
+        serializer = MessageFacebookSerializer(data=request.data)
+        room, data, message_type_attachment,user_header = serializer.validate(request ,request.data)
+        # send message
+        if room.page_id.is_active:
+            if message_type_attachment:
+                for file in data['files']:
+                    res = api_send_message_file_facebook(room.page_id.access_token_page, data, file)
+                    if not res:
+                        return custom_response(400, "error", "Send message to Facebook error")
+                    message_response = get_message_from_mid(room.page_id.access_token_page, res['message_id'])
+                    _uuid = uuid.uuid4()
+                    data_mid_json = facebook_format_data_from_mid_facebook(room, message_response, _uuid,user_header)
+                    asyncio.run(send_message_fb(json.dumps(data_mid_json).encode()))
+                return custom_response(200, "success", "Send message to Facebook success")
+            else:
+            # get message from mid
+                res = api_send_message_text_facebook(room.page_id.access_token_page, data)
+                if not res:
+                    return custom_response(400, "error", "Send message to Facebook error")
+                message_response = get_message_from_mid(room.page_id.access_token_page, res['message_id'])
+                _uuid = uuid.uuid4()
+                data_mid_json = facebook_format_data_from_mid_facebook(room, message_response, _uuid,user_header)
+                asyncio.run(send_message_fb(json.dumps(data_mid_json).encode()))
+                room.last_message_date = timezone.now()
+                return custom_response(200, "success", "Send message to Facebook success")
+        else:
+            return custom_response(400, "Send message failed", "Send message to Facebook failed")

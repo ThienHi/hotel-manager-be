@@ -47,12 +47,12 @@ services:
   redis:
     image: redis:6
 
-  celeryworker:
-    <<: *django
-    image: hotel_manager_production_celeryworker
-    command: /start-celeryworker
+  # celeryworker:
+  #   <<: *django
+  #   image: hotel_manager_production_celeryworker
+  #   command: /start-celeryworker
 
-  celerybeat:
-    <<: *django
-    image: hotel_manager_production_celerybeat
-    command: /start-celerybeat
+  # celerybeat:
+  #   <<: *django
+  #   image: hotel_manager_production_celerybeat
+  #   command: /start-celerybeat
