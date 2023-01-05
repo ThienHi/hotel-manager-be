@@ -42,3 +42,4 @@ ujson
 aioredis==2.0.0
 unidecode
 django-celery-results
+django-storages[boto3]==1.11.1  # https://github.com/jschneier/django-storages

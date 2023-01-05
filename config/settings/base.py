@@ -359,3 +359,14 @@ CORS_ALLOW_METHODS = [
 
 # APP Facebook
 SUBSCRIBE_FIELDS = 'messages,messaging_postbacks,feed,inbox_labels,message_reads'
+
+# STORAGE
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = 'AKIARLMUPIY4RK46MXTO'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'thienhi'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_S3_REGION_NAME = 'ap-southeast-1'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_S3_VERIFY = True

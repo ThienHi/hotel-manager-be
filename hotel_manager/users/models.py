@@ -5,6 +5,18 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator
 from django.utils.translation import gettext_lazy as _
 from tinymce import models as tinymce_models
+from storages.backends.s3boto3 import S3Boto3Storage
+from os.path import splitext
+
+
+class StaticRootS3Boto3Storage(S3Boto3Storage):
+    location = "static"
+    default_acl = "public-read"
+
+
+class MediaRootS3Boto3Storage(S3Boto3Storage):
+    location = "media"
+    file_overwrite = False
 
 
 def upload_image_to(instance, filename):
@@ -89,7 +101,7 @@ class Hotel(models.Model):
     offer = models.IntegerField(null=True)
     country = models.CharField(max_length=255, null=True, blank=True)
     rate_hotel = models.IntegerField(null=True, blank=True, choices=Rate.choices, default=Rate.THREE)
-    image = models.ImageField(blank=True, null=True)
+    image = models.ImageField(blank=True, null=True, upload_to=upload_image_to)
 
     class Meta:
         db_table = 'hotel'
@@ -119,7 +131,7 @@ class HotelRoom(models.Model):
     offer = models.IntegerField(null=True)
     rate_hotel_room = models.IntegerField(blank=True, choices=Rate.choices, default=Rate.THREE)
     price = models.FloatField(null=False, blank=False)
-    image = models.ImageField(blank=True, null=True)
+    image = models.ImageField(blank=True, null=True, upload_to=upload_image_to)
 
     class Meta:
         db_table = 'hotel_room'
