@@ -1,6 +1,5 @@
 from .base import BaseCheckDataMessageManager
 from core import constants
-from typing import Dict
 from core.schema import NatsChatMessage
 from core.utils import check_room_facebook
 

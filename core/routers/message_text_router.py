@@ -3,7 +3,7 @@ from core.schema import NatsChatMessage
 from core.abstractions import AbsAppContext
 from core import constants
 from hotel_manager.users.models import Room
-from core.utils import get_message_from_mid, facebook_format_mid_to_nats_message, data_from_corechat_to_report
+from core.utils import get_message_from_mid, facebook_format_mid_to_nats_message
 from pydantic import parse_obj_as
 import logging
 
@@ -25,5 +25,5 @@ class MessageTextRouter(BaseRouter):
                 return
             fb_msg = facebook_format_mid_to_nats_message(room, msg, data)
             data = parse_obj_as(NatsChatMessage, fb_msg)
-        await self.context.run_manager(manager_type=constants.WEBSOCKET_MANAGER, room=room, data=data)
+        # await self.context.run_manager(manager_type=constants.WEBSOCKET_MANAGER, room=room, data=data)
         await self.context.run_manager(manager_type=constants.STORAGE_MANAGER, room=room, data=data)

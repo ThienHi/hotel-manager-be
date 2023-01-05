@@ -4,6 +4,8 @@ Base settings to build other settings files upon.
 from pathlib import Path
 
 import environ
+import os
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # hotel_manager/

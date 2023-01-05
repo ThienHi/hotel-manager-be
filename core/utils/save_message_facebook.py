@@ -1,4 +1,5 @@
-from sop_chat_service.app_connect.models import Message, Attachment
+# from sop_chat_service.app_connect.models import Message, Attachment
+from hotel_manager.users.models import Message, Attachment
 from core.utils.api_facebook_app import get_message_from_mid
 from core.utils.format_message_for_websocket import facebook_format_mid
 from django.utils import timezone

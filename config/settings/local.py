@@ -72,10 +72,11 @@ CELERY_TASK_EAGER_PROPAGATES = True
 # APP Facebook
 SUBSCRIBE_FIELDS = 'messages,messaging_postbacks,feed,inbox_labels,message_reads'
 
-FACEBOOK_APP_ID = '5482298951821522'     # 459417807935454
-FACEBOOK_APP_SECRET = '14999c82309aff7a760b509c96c16b00'    # 316f7035fded8674d79148a130518ed0
-FACEBOOK_GRAPH_API = 'https://graph.facebook.com/v14.0'
+FACEBOOK_APP_ID = '832732297817343'     # 459417807935454
+FACEBOOK_APP_SECRET = '2958fe3d1ddc2935fdfd1fa15fce8466'    # 316f7035fded8674d79148a130518ed0
+FACEBOOK_GRAPH_API = 'https://graph.facebook.com/v15.0'
 URL_FACEBOOK_GRAPH_API_SEND_MESSAGE = 'https://graph.facebook.com/me/messages'
+PROFILE_USER_FIELDS = 'first_name,last_name,profile_pic,gender,locale,name,email'
 
 
 # Setup NATs

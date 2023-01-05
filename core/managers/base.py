@@ -14,13 +14,13 @@ class BaseManager(SingletonClass, AbsManager):
             return
         self._handlers = await self._get_handlers()
         self._initialized = True
-        await self.nats_client.connect()
+        # await self.nats_client.connect()
 
     def _singleton_init(self, **kwargs):
         self._initialized: bool = False
         self._is_connected: bool = False
         self._handlers: Dict[str, AbsHandler] = {}
-        self.nats_client = NatsClient()
+        # self.nats_client = NatsClient()
         self.redis_client = redis_client
 
     def bind_context(self, context: AbsAppContext, **kwargs):

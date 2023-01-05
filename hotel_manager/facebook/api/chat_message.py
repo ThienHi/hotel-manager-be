@@ -5,7 +5,10 @@ from schemas.chat_message_schema import FacebookIncomingMessage
 from schemas.nats import NatsChatMessage, NatsChatMessageAttachment
 from schemas.nats import Messaging as FacebookMessaging
 from schemas.chat_message_schema import FacebookIncomingMessage
+from core.context import AppContextManager
 from hotel_manager.utils.nats_publish import connect_nats_client_publish_websocket
+from pydantic import parse_raw_as
+import uuid
 
 debug_logger = logging.getLogger(constants.DEBUG_LOGGER_NAME)
 
@@ -32,6 +35,7 @@ async def facebook_create_nats_chat_message(
     ).json()
 
 
+app_context = AppContextManager()
 async def facebook_publish_to_nats_each_page_id(incoming_message: FacebookIncomingMessage):
     # create data in right format then publish into nats
     results = []
@@ -41,12 +45,10 @@ async def facebook_publish_to_nats_each_page_id(incoming_message: FacebookIncomi
                 nats_subject = "WEBHOOK_TO_CORECHAT_MESSAGE"
                 if entry.id and nats_subject:
                     nats_msg = await facebook_create_nats_chat_message(entry.id, messaging, 'facebook')
-
-                    _res = await connect_nats_client_publish_websocket(
-                        nats_subject,
-                        nats_msg.encode()
-                    )
-                    results.append({'subject': nats_subject, 'res': _res})
+                    nats_message = parse_raw_as(NatsChatMessage, (nats_msg.replace("'", "\"")))
+                    nats_message.uuid = str(uuid.uuid4())
+                    print(" ********************************************** ", nats_message)
+                    await app_context.run_receiver(nats_message)
     return results
 
 

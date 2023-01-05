@@ -9,7 +9,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
 from hotel_manager.users.api.auth_view import MyTokenObtainPairView, LogoutView
 from hotel_manager.users.api.views import RegisterView, RegisterCustomerView
-from hotel_manager.facebook.api.facebook_auth_view import FacebookWebhookView, VerifyFacebookWebhookView
+from hotel_manager.facebook.api.facebook_auth_view import FacebookWebhookView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 urlpatterns = [

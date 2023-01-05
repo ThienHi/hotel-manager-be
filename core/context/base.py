@@ -33,7 +33,6 @@ class BaseAppContext(AbsAppContext):
 # ----------------    SEND MESSAGE    ----------------
     async def run_send_message(self, message: FormatSendMessage, **kwargs):
         router: AbsRouter = await self._get_routers(message.msg_status)
-        # router: AbsRouter = SendMessageRouter()
         if router:
             router.bind_context(self)
             await router.process_message(message)
@@ -51,7 +50,8 @@ class BaseAppContext(AbsAppContext):
 
 # ----------------    MANAGER    ----------------
     async def _get_manager(self, manager_type: str) -> Dict[str, AbsManager]:
-        for manager_class in (StorageManager, WebSocketManager, SendMessageManager):
+        # for manager_class in (StorageManager, WebSocketManager, SendMessageManager):
+        for manager_class in (StorageManager, ):
             manager_instance = manager_class()
             self._managers.update({manager_instance.manager_type: manager_instance})
         return self._managers.get(manager_type)

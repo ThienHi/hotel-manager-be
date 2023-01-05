@@ -6,13 +6,11 @@ from django.conf import settings
 from celery import shared_task
 from core import constants
 from core.stream.redis_connection import redis_client
-from core.utils.format_elastic_log import format_elk_log
 from core.utils.nats_connect import publish_data_to_nats
-from core.utils.format_log_message import format_log_message_from_celery
 from core.utils.format_message_for_websocket import format_room
 from typing import Dict
-from sop_chat_service.app_connect.models import Room, UserApp,FanpageReport
-from elasticsearch import Elasticsearch
+# from sop_chat_service.app_connect.models import Room, UserApp,FanpageReport
+# from elasticsearch import Elasticsearch
 
 logger = logging.getLogger(__name__)
 

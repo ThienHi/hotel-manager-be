@@ -230,7 +230,7 @@ class Room(models.Model):
         return self.name
     
     def save(self, *args, **kwargs):
-        message = Message.objects.filter(room_id = self,log_message_id__isnull=True).order_by('-created_at').first()
+        message = Message.objects.filter(room_id = self).order_by('-created_at').first()
         if message:
             self.last_message_date = message.created_at
         super(Room, self).save(*args, **kwargs)
@@ -264,8 +264,18 @@ class Message(models.Model):
 
     def save(self, *args, **kwargs):
         room = self.room_id
-        message = Message.objects.filter(room_id = room,log_message_id__isnull=True).order_by('-created_at').first()
+        message = Message.objects.filter(room_id = room).order_by('-created_at').first()
         if message:
             room.last_message_date = message.created_at
             room.save()
         super(Message, self).save(*args, **kwargs)
+
+class Attachment(models.Model):
+    mid = models.ForeignKey(Message, related_name='message_id', null=True, blank=True,
+                            on_delete=models.SET_NULL)     # foreign key with message
+    attachment_id = models.CharField(max_length=255, null=True, blank=True)      # id of attachment
+    file = models.FileField(blank=True, null=True, upload_to=upload_image_to)
+    type = models.CharField(max_length=255, null=True, blank=True)      # type of attachment
+    url = models.CharField(max_length=500, null=True, blank=True)      # url of attachment
+    name = models.CharField(max_length=500, null=True, blank=True)      # name of attachment
+    size = models.IntegerField(null=True, blank=True)

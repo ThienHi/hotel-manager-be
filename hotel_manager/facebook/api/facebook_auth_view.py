@@ -5,19 +5,17 @@ from rest_framework import viewsets, permissions, generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.conf import settings
-from hotel_manager.users.models import FanPage
+from hotel_manager.users.models import FanPage, Message
 from hotel_manager.facebook.serializers.page_serializers import (
     FanPageSerializer,
     FacebookAuthenticationSerializer,
     FacebookConnectPageSerializer,
     DeleteFanPageSerializer,
-    WebhookFacebookSerializer
 )
 from hotel_manager.utils.response import custom_response
 from .chat_message import handle_incoming_chat_message
-import asyncio
 from rest_framework.views import APIView
-import json
+import asyncio, json
 
 
 class FacebookWebhookView(APIView):
@@ -27,8 +25,7 @@ class FacebookWebhookView(APIView):
     def post(self, request,*args, **kwargs):
         body = request.data
         print(type(body), "post request --------------------------------------- ", body)
-        # asyncio.run(connect_nats_client_publish_websocket("new_topic_publish", json.dumps(body).encode()))
-        # asyncio.run(handle_incoming_chat_message(json.dumps(body).encode('utf-8')))
+        asyncio.run(handle_incoming_chat_message(json.dumps(body).encode('utf-8')))
         return Response(status=status.HTTP_200_OK)
 
     def get(self, request, format=None, *args, **kwargs):
@@ -41,18 +38,11 @@ class FacebookWebhookView(APIView):
         return Response(data=int(challenge), status=status.HTTP_200_OK)
 
 
-class VerifyFacebookWebhookView(generics.ListAPIView):
+class ReportMessageView(generics.ListAPIView):
     permission_classes = (permissions.AllowAny,)
-    # serializer_class = WebhookFacebookSerializer
 
     def get(self, request,*args, **kwargs):
-        hub_mode = request.GET.get('hub.mode')
-        hub_challenge = request.GET.get('hub.challenge')
-        hub_verify_token = request.GET.get('hub.verify_token')
-        print(f'hub_mode {hub_mode} - hub_challenge {hub_challenge} - hub_verify_token {hub_verify_token}')
         return Response(status=status.HTTP_200_OK)
-
-
 
 
 class FacebookViewSet(viewsets.ModelViewSet):
@@ -61,7 +51,6 @@ class FacebookViewSet(viewsets.ModelViewSet):
     serializer_class = FacebookAuthenticationSerializer
 
     def list(self, request, *args, **kwargs):
-        # user_header = get_user_from_header(request.headers)
         user_header = request.user
         pages = FanPage.objects.filter(user_id=user_header, type=constants.FACEBOOK,is_deleted= False)
         sz = FanPageSerializer(pages, many=True)

@@ -43,6 +43,7 @@ class NatsChatMessage(CustomBaseModel):
     typeMessage: Optional[str] = constants.NATS_MSG_TYPE_TEXT
     optionals: List[ChatOptional] = []
     room_id: Optional[str]
+    uuid: Optional[str]
 
 
 class Sender(CustomBaseModel):

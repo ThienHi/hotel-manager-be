@@ -6,7 +6,7 @@ import time
 from core.schema import NatsChatMessage, MessageChat, ChatMessageAttachment, MessageToWebSocket, DataFollowToWebSocket, CustomerInfo
 from core.schema.message_websocket import ChatMessageUserInfo
 from core import constants
-from sop_chat_service.app_connect.models import Room, UserApp
+from hotel_manager.users.models import Room, UserApp
 
 
 def format_receive_message(room, data: NatsChatMessage):
@@ -119,10 +119,7 @@ def facebook_format_mid_to_nats_message(room, message_response, data: NatsChatMe
         # "typeChat": constants.FACEBOOK,
         "typeChat": data.typeChat,
         "uuid": data.uuid,
-        "typeMessage": data.typeMessage,
-        "is_new_chat": data.is_new_chat,
-        "is_new_conversation": data.is_new_conversation,
-        "is_new_complete_conversation": data.is_new_complete_conversation
+        "typeMessage": data.typeMessage
     }
     return data_mid_json
 
