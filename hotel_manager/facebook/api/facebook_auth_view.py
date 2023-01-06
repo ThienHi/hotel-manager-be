@@ -16,7 +16,9 @@ from hotel_manager.facebook.serializers.message_facebook_serializers import Mess
 from hotel_manager.utils.response import custom_response
 from .chat_message import handle_incoming_chat_message
 from rest_framework.views import APIView
-import asyncio, json, uuid
+import asyncio
+import json
+import uuid
 from core.utils import (
     api_send_message_file_facebook,
     get_message_from_mid,
@@ -33,7 +35,7 @@ class FacebookWebhookView(APIView):
     permission_classes = (permissions.AllowAny,)
     # serializer_class = WebhookFacebookSerializer
 
-    def post(self, request,*args, **kwargs):
+    def post(self, request, *args, **kwargs):
         body = request.data
         print(type(body), "post request --------------------------------------- ", body)
         asyncio.run(handle_incoming_chat_message(json.dumps(body).encode('utf-8')))
@@ -52,18 +54,18 @@ class FacebookWebhookView(APIView):
 class ReportMessageView(generics.ListAPIView):
     permission_classes = (permissions.AllowAny,)
 
-    def get(self, request,*args, **kwargs):
+    def get(self, request, *args, **kwargs):
         return Response(status=status.HTTP_200_OK)
 
 
 class FacebookViewSet(viewsets.ModelViewSet):
     queryset = FanPage.objects.all()
-    permission_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.IsAuthenticated, )
     serializer_class = FacebookAuthenticationSerializer
 
     def list(self, request, *args, **kwargs):
         user_header = request.user.id
-        pages = FanPage.objects.filter(user_id=user_header, type=constants.FACEBOOK,is_deleted= False)
+        pages = FanPage.objects.filter(user_id=user_header, type=constants.FACEBOOK, is_deleted=False)
         sz = FanPageSerializer(pages, many=True)
         return custom_response(200, "Get list page successfully", sz.data)
 
@@ -75,26 +77,28 @@ class FacebookViewSet(viewsets.ModelViewSet):
         graph_api = settings.FACEBOOK_GRAPH_API
         # try:
         query = {'redirect_uri': sz.data['redirect_url'], 'code': sz.data['code'],
-                    'client_id': settings.FACEBOOK_APP_ID, 'client_secret': settings.FACEBOOK_APP_SECRET}
+                 'client_id': settings.FACEBOOK_APP_ID, 'client_secret': settings.FACEBOOK_APP_SECRET}
         access_response = requests.get(f'{graph_api}/oauth/access_token', params=query)
+        print(user_header, " ############################## ", access_response.text)
         if access_response.status_code == 200:
             page_query = {'access_token': access_response.json()['access_token']}
             me = requests.get(f'{graph_api}/me', params=page_query)
-            fb_user_id= me.json()['id']
+            fb_user_id = me.json()['id']
             page_response = requests.get(f'{graph_api}/me/accounts', params=page_query)
             if page_response.status_code == 200:
                 data = page_response.json()
                 id = []
-                if  not data['data']:
-                    pages = FanPage.objects.filter(type='facebook',user_id=user_header,fanpage_user_id=fb_user_id)
+                if not data['data']:
+                    pages = FanPage.objects.filter(type='facebook', user_id=user_header, fanpage_user_id=fb_user_id)
                     for remove_page in pages:
-                        remove_page.access_token_page=None
-                        remove_page.is_active=False
+                        remove_page.access_token_page = None
+                        remove_page.is_active = False
                         remove_page.save()
                     return custom_response(400, "List Page Is Null", [])
                 else:
                     for item in data['data']:
-                        page = FanPage.objects.filter(type='facebook',page_id=item['id'],user_id=user_header,fanpage_user_id=fb_user_id).first()
+                        page = FanPage.objects.filter(
+                            type='facebook', page_id=item['id'], user_id=user_header, fanpage_user_id=fb_user_id).first()
                         id.append(item['id'])
                         avt_id = item['id']
                         page_url_query = {
@@ -107,21 +111,22 @@ class FacebookViewSet(viewsets.ModelViewSet):
                             FanPage.objects.create(
                                 page_id=item['id'], name=item['name'], access_token_page=item['access_token'],
                                 avatar_url=f'{graph_api}/{avt_id}/picture',
-                                user_id=user_header,fanpage_user_id=fb_user_id,
+                                user_id=user_header, fanpage_user_id=fb_user_id,
                                 is_deleted=False,
                                 page_url=page_json['link']
                             )
                         else:
-                            page.access_token_page=item['access_token']
-                            page.name=item['name']
-                            page.avatar_url=f'{graph_api}/{avt_id}/picture'
-                            page.is_deleted=False
-                            page.page_url =page_json['link']
+                            page.access_token_page = item['access_token']
+                            page.name = item['name']
+                            page.avatar_url = f'{graph_api}/{avt_id}/picture'
+                            page.is_deleted = False
+                            page.page_url = page_json['link']
                             page.save()
-                page_remove = FanPage.objects.filter(user_id=user_header,fanpage_user_id=fb_user_id,type='facebook').exclude(page_id__in=id )
+                page_remove = FanPage.objects.filter(
+                    user_id=user_header, fanpage_user_id=fb_user_id, type='facebook').exclude(page_id__in=id)
                 for item in page_remove:
                     item.is_active = False
-                    item.is_deleted=True
+                    item.is_deleted = True
                     item.access_token_page = ''
                     item.save()
                 return custom_response(200, "Get list page success", [])
@@ -204,7 +209,7 @@ class FacebookViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['POST'], url_path='delete')
     def delete(self, request, *args, **kwargs):
         user_header = request.user.id
-        sz = DeleteFanPageSerializer(data = request.data)
+        sz = DeleteFanPageSerializer(data=request.data)
         sz.is_valid(raise_exception=True)
         graph_api = settings.FACEBOOK_GRAPH_API
         for id in sz.data['id']:
@@ -216,21 +221,21 @@ class FacebookViewSet(viewsets.ModelViewSet):
                 if response.status_code == 200:
                     data = response.json()
                     if data['success']:
-                        page.is_deleted= True
+                        page.is_deleted = True
                         page.is_active = False
                         page.access_token_page = "invalid"
                     else:
                         pass
                 else:
-                    page.is_deleted= True
+                    page.is_deleted = True
                     page.is_active = False
                     page.access_token_page = "invalid"
-            else :
-                page.is_deleted= True
+            else:
+                page.is_deleted = True
                 page.is_active = False
                 page.access_token_page = "invalid"
-            page.save() 
-        return custom_response(200,'Delete Pages Successfully',[])
+            page.save()
+        return custom_response(200, 'Delete Pages Successfully', [])
 
     def destroy(self, request, pk=None):
         pass
@@ -241,11 +246,14 @@ class FacebookViewSet(viewsets.ModelViewSet):
     def create(self, request):
         pass
 
+
 app_context = AppContextManager()
+
 
 async def send_message_fb(msg):
     _message = parse_raw_as(FormatSendMessage, msg)
     await app_context.run_send_message(_message)
+
 
 class MessageFacebookViewSet(viewsets.ModelViewSet):
     queryset = Room.objects.all()
@@ -255,7 +263,7 @@ class MessageFacebookViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["POST"], url_path="send")
     def send_message(self, request, *args, **kwargs):
         serializer = MessageFacebookSerializer(data=request.data)
-        room, data, message_type_attachment,user_header = serializer.validate(request ,request.data)
+        room, data, message_type_attachment, user_header = serializer.validate(request, request.data)
         # send message
         if room.page_id.is_active:
             if message_type_attachment:
@@ -265,17 +273,17 @@ class MessageFacebookViewSet(viewsets.ModelViewSet):
                         return custom_response(400, "error", "Send message to Facebook error")
                     message_response = get_message_from_mid(room.page_id.access_token_page, res['message_id'])
                     _uuid = uuid.uuid4()
-                    data_mid_json = facebook_format_data_from_mid_facebook(room, message_response, _uuid,user_header)
+                    data_mid_json = facebook_format_data_from_mid_facebook(room, message_response, _uuid, user_header)
                     asyncio.run(send_message_fb(json.dumps(data_mid_json).encode()))
                 return custom_response(200, "success", "Send message to Facebook success")
             else:
-            # get message from mid
+                # get message from mid
                 res = api_send_message_text_facebook(room.page_id.access_token_page, data)
                 if not res:
                     return custom_response(400, "error", "Send message to Facebook error")
                 message_response = get_message_from_mid(room.page_id.access_token_page, res['message_id'])
                 _uuid = uuid.uuid4()
-                data_mid_json = facebook_format_data_from_mid_facebook(room, message_response, _uuid,user_header)
+                data_mid_json = facebook_format_data_from_mid_facebook(room, message_response, _uuid, user_header)
                 asyncio.run(send_message_fb(json.dumps(data_mid_json).encode()))
                 room.last_message_date = timezone.now()
                 return custom_response(200, "success", "Send message to Facebook success")
